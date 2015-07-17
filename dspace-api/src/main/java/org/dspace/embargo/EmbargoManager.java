@@ -460,5 +460,18 @@ public class EmbargoManager
         }
         return liftDate;
     }
-
+    
+    
+	static public ItemIterator getEmbargoedItems(Context context) 
+			throws SQLException, AuthorizeException, IOException 
+	{
+		init();
+        ItemIterator ii = Item.findByMetadataField(context, 
+        		EmbargoManager.lift_schema, 
+        		EmbargoManager.lift_element, 
+        		EmbargoManager.lift_qualifier, 
+        		Item.ANY);
+        return ii;
+	}
+	
 }
