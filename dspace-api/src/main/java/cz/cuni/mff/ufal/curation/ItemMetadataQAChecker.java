@@ -469,6 +469,14 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
             "dc.subject",
         })
         {
+            String handle = item.getHandle();
+            // do not check imported handles from LRT
+            if ( handle != null && handle.contains("LRT") ) {
+                int lrt_pos = Integer.valueOf(handle.split("LRT-")[1]);
+                if (lrt_pos < 1500) {
+                    return;
+                }
+            }
             Metadatum[] vals = item.getMetadataByMetadataString(md);
             if ( null == vals || 0 == vals.length ) {
                 throw new CurateException(
