@@ -100,7 +100,7 @@ public class EditItemStatusForm extends AbstractDSpaceTransformer {
 		
 		// LIST: options
 		List options = main.addList("options",List.TYPE_SIMPLE,"horizontal");
-		ViewItem.add_options(options, baseURL, ViewItem.T_option_status, tabLink);
+		ViewItem.add_options(context, eperson, options, baseURL, ViewItem.T_option_status, tabLink);
 		
 		main = main.addDivision("item-status", "well well-light");
 		
