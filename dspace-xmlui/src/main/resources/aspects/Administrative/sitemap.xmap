@@ -589,6 +589,18 @@ to administer DSpace.
 						
 						<map:when test="servicemanager">
 						
+			        		<map:match pattern="admin/item/status">
+			        			<map:transform type="EditItemStatusForm">
+			        				<map:parameter name="itemID" value="{flow-attribute:itemID}"/>
+			        			</map:transform>
+			        		</map:match>
+						
+							<map:match pattern="admin/item/view_item">
+			        			<map:transform type="ViewItem">
+			        				<map:parameter name="itemID" value="{flow-attribute:itemID}"/>
+			        			</map:transform>
+			        		</map:match>
+						
 							<map:match pattern="admin/item/services">
 			        			<map:transform type="EditItemServicesForm">
 			        				<map:parameter name="itemID" value="{flow-attribute:itemID}"/>

@@ -174,6 +174,8 @@ public class ViewItem extends AbstractDSpaceTransformer {
 		}
 		
 		if(isServiceManger) {
+			map.put("&submit_status", T_option_status);
+			map.put("&view_item", T_option_view);			
 			map.put("&services", T_option_services);
 		} else {		
 			map.put("&submit_status", T_option_status);
