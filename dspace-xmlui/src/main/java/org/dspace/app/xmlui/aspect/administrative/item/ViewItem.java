@@ -95,7 +95,7 @@ public class ViewItem extends AbstractDSpaceTransformer {
 		
 		// LIST: options
 		List options = main.addList("options", List.TYPE_SIMPLE, "horizontal");
-		add_options(null, null, options, baseURL, T_option_view, tabLink);
+		add_options(context, eperson, options, baseURL, T_option_view, tabLink);
 
 		
 		main = main.addDivision("item-view", "well well-small well-light");

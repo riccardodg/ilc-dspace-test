@@ -1506,6 +1506,11 @@ function doEditItem(itemID)
         {
             editEmbargo(itemID);
         }
+        else if (cocoon.request.get("services"))
+        {
+            doEditItemServices(itemID);
+        }
+	    
                 else
 		{
 			// This case should never happen but to prevent an infinite loop
@@ -1573,6 +1578,22 @@ function doEditItemLicense(itemID) {
             return null;
         }
     } while (true)
+}
+
+	
+/**
+*  Add/Remove Item Services
+*/
+function doEditItemServices(itemID){
+	do {
+		sendPageAndWait("admin/item/services",{"itemID":itemID},null);
+		assertEditItem(itemID);
+		if ( !cocoon.request.get("services"))
+		{
+			// go back to wherever we came from.
+			return null;
+		}
+	} while (true)
 }
 
 
