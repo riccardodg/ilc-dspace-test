@@ -1587,9 +1587,11 @@ function doEditItemLicense(itemID) {
 */
 function doEditItemServices(itemID){
 	do {
-		sendPageAndWait("admin/item/services",{"itemID":itemID},null);
+		var activate = cocoon.request.getParameter("activate");
+		var deactivate = cocoon.request.getParameter("deactivate");
+		sendPageAndWait("admin/item/services",{"itemID":itemID,"activate":activate,"deactivate":deactivate},null);
 		assertEditItem(itemID);
-		if ( !cocoon.request.get("services"))
+		if (!cocoon.request.get("services"))
 		{
 			// go back to wherever we came from.
 			return null;

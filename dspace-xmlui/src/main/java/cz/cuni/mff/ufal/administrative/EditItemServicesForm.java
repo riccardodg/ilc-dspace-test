@@ -78,13 +78,23 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		String baseURL = contextPath+"/admin/item?administrative-continue="+knot.getId();
 		
 		
-		if(activate!=null) {
+		if(activate!=null && !activate.isEmpty()) {
 			item.clearMetadata("local", "featuredService", activate, item.ANY);
 			item.addMetadata("local", "featuredService", activate, item.ANY, "true");
+			try {
+				item.update();
+			} catch (AuthorizeException e) {
+				log.error(e);
+			}
 		}
 		
-		if(deactivate!=null) {
+		if(deactivate!=null && !activate.isEmpty()) {
 			item.clearMetadata("local", "featuredService", activate, item.ANY);
+			try {
+				item.update();
+			} catch (AuthorizeException e) {
+				log.error(e);
+			}			
 		}
 		
 		
