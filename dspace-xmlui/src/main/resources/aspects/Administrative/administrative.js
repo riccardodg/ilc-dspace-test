@@ -1590,6 +1590,7 @@ function doEditItemServices(itemID){
 		sendPageAndWait("admin/item/services",{"itemID":itemID},null);
 		assertEditItem(itemID);
 		if ( !cocoon.request.get("services"))
+		{
 			// go back to wherever we came from.
 			return null;
 		}
