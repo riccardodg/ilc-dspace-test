@@ -70,11 +70,24 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 	{
 		// Get our parameters and state
 		int itemID = parameters.getParameterAsInteger("itemID",-1);
-		boolean define = parameters.getParameterAsBoolean("define", false);
+		
+		String activate = parameters.getParameter("activate", null);
+		String deactivate = parameters.getParameter("deactivate", null);
 		
 		Item item = Item.find(context, itemID);
 		String baseURL = contextPath+"/admin/item?administrative-continue="+knot.getId();
-
+		
+		
+		if(activate!=null) {
+			item.clearMetadata("local", "featuredService", activate, item.ANY);
+			item.addMetadata("local", "featuredService", activate, item.ANY, "true");
+		}
+		
+		if(deactivate!=null) {
+			item.clearMetadata("local", "featuredService", activate, item.ANY);
+		}
+		
+		
 		// DIVISION: main
 		Division main = body.addInteractiveDivision("edit-item-services", contextPath+"/admin/item", Division.METHOD_POST,"primary administrative edit-item-services");
 		main.setHead(T_option_head);
@@ -83,7 +96,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		
 		// LIST: options
 		List options = main.addList("options", List.TYPE_SIMPLE, "horizontal");
-		ViewItem.add_options(context, eperson, options, baseURL, ViewItem.T_option_license, tabLink);
+		ViewItem.add_options(context, eperson, options, baseURL, ViewItem.T_option_services, tabLink);
 		
 		String featuredServices = ConfigurationManager.getProperty("lr", "featured.services");
 		
@@ -102,10 +115,10 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 				fsInnerDiv.addPara(description);				
 					
 				Metadatum[] mds = item.getMetadataByMetadataString("local.featuredService." + featuredService);
-				if(mds!=null && mds.length>0) {
-					fsInnerDiv.addPara().addButton("deactivate", "btn btn-danger").setValue(featuredService); 
+				if(mds!=null && mds.length!=0 && mds[0].value.equals("true")) {
+					fsInnerDiv.addPara().addXref(tabLink + "&deactivate=" + featuredService, "Deactivate", "btn btn-danger");
 				} else {
-					fsInnerDiv.addPara().addButton("activate" + featuredService, "btn btn-info").setValue(featuredService);
+					fsInnerDiv.addPara().addXref(tabLink + "&activate=" + featuredService, "Activate", "btn btn-info");
 				}
 			}
 		

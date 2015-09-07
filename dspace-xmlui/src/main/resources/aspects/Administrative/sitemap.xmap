@@ -604,6 +604,8 @@ to administer DSpace.
 							<map:match pattern="admin/item/services">
 			        			<map:transform type="EditItemServicesForm">
 			        				<map:parameter name="itemID" value="{flow-attribute:itemID}"/>
+			        				<map:parameter name="activate" value="{flow-attribute:activate}"/>
+			        				<map:parameter name="deactivate" value="{flow-attribute:deactivate}"/>
 			        			</map:transform>
 			        		</map:match>					
 						
@@ -760,6 +762,8 @@ to administer DSpace.
 							<map:match pattern="admin/item/services">
 			        			<map:transform type="EditItemServicesForm">
 			        				<map:parameter name="itemID" value="{flow-attribute:itemID}"/>
+			        				<map:parameter name="activate" value="{flow-attribute:activate}"/>
+			        				<map:parameter name="deactivate" value="{flow-attribute:deactivate}"/>			        				
 			        			</map:transform>
 			        		</map:match>					
 			        		
