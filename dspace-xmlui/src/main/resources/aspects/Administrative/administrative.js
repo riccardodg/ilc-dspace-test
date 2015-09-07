@@ -1534,6 +1534,7 @@ function doEditNavigateAway(should_stay) {
     || cocoon.request.get("submit_curate") 
     || cocoon.request.get("edit_license") 
     || cocoon.request.get("embargo") 
+    || cocoon.request.get("services") 
     ) {
       return true;
     }

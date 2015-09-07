@@ -89,7 +89,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		
 		if(featuredServices!=null && !featuredServices.isEmpty()) {
 			
-			Division fsDiv = main.addDivision("featuredService", "well well-light");
+			Division fsDiv = main.addDivision("featuredService", "");
 
 			for(String featuredService : featuredServices.split(",")) {
 								
@@ -97,15 +97,15 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 				String url = ConfigurationManager.getProperty("lr", "featured.service." + featuredService + ".url");
 				String description = ConfigurationManager.getProperty("lr", "featured.service." + featuredService + ".description");					
 
-				Division fsInnerDiv = fsDiv.addDivision(featuredService, "col-md-12").addDivision("th", "thumbnail").addDivision("caption", "caption");
-				fsInnerDiv.addPara().addXref(url, name, "target_blank");
+				Division fsInnerDiv = fsDiv.addDivision(featuredService, "well well-white").addDivision("caption", "caption");
+				fsInnerDiv.addPara(null, "h3").addXref(url, name, "target_blank");
 				fsInnerDiv.addPara(description);				
 					
 				Metadatum[] mds = item.getMetadataByMetadataString("local.featuredService." + featuredService);
 				if(mds!=null && mds.length>0) {
-					fsInnerDiv.addPara().addButton("featuredService_" + featuredService, "btn btn-danger").setValue("Deactivate"); 
+					fsInnerDiv.addPara().addButton("deactivate", "btn btn-danger").setValue(featuredService); 
 				} else {
-					fsInnerDiv.addPara().addButton("featuredService_" + featuredService, "btn btn-primary").setValue("Activate");
+					fsInnerDiv.addPara().addButton("activate" + featuredService, "btn btn-info").setValue(featuredService);
 				}
 			}
 		
