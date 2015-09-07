@@ -88,8 +88,8 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 			}
 		}
 		
-		if(deactivate!=null && !activate.isEmpty()) {
-			item.clearMetadata("local", "featuredService", activate, item.ANY);
+		if(deactivate!=null && !deactivate.isEmpty()) {
+			item.clearMetadata("local", "featuredService", deactivate, item.ANY);
 			try {
 				item.update();
 			} catch (AuthorizeException e) {
@@ -123,7 +123,6 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 				Division fsInnerDiv = fsDiv.addDivision(featuredService, "well well-white").addDivision("caption", "caption");
 				fsInnerDiv.addPara(null, "h3").addXref(url, name, "target_blank");
 				fsInnerDiv.addPara(description);				
-					
 				Metadatum[] mds = item.getMetadataByMetadataString("local.featuredService." + featuredService);
 				if(mds!=null && mds.length!=0 && mds[0].value.equals("true")) {
 					fsInnerDiv.addPara().addXref(tabLink + "&deactivate=" + featuredService, "Deactivate", "btn btn-danger");
