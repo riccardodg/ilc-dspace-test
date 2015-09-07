@@ -115,8 +115,6 @@ public class ViewItem extends AbstractDSpaceTransformer {
             showfullPara.addXref(link).addContent(T_show_full);
         }
 
-		Division view = main.addDivision("item-view", "well well-white");
-		
 		ReferenceSet referenceSet;
 		referenceSet = main.addReferenceSet("collection-viewer",
 				showFullItem?ReferenceSet.TYPE_DETAIL_VIEW:ReferenceSet.TYPE_SUMMARY_VIEW);

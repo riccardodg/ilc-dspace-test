@@ -24,6 +24,7 @@ import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
 import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 
@@ -84,6 +85,33 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		List options = main.addList("options", List.TYPE_SIMPLE, "horizontal");
 		ViewItem.add_options(context, eperson, options, baseURL, ViewItem.T_option_license, tabLink);
 		
+		String featuredServices = ConfigurationManager.getProperty("lr", "featured.services");
+		
+		if(featuredServices!=null && !featuredServices.isEmpty()) {
+			
+			Division fsDiv = main.addDivision("featuredService", "well well-light");
+
+			for(String featuredService : featuredServices.split(",")) {
+								
+				String name = ConfigurationManager.getProperty("lr", "featured.service." + featuredService + ".fullname");
+				String url = ConfigurationManager.getProperty("lr", "featured.service." + featuredService + ".url");
+				String description = ConfigurationManager.getProperty("lr", "featured.service." + featuredService + ".description");					
+
+				Division fsInnerDiv = fsDiv.addDivision(featuredService, "col-md-12").addDivision("th", "thumbnail").addDivision("caption", "caption");
+				fsInnerDiv.addPara().addXref(url, name, "target_blank");
+				fsInnerDiv.addPara(description);				
+					
+				Metadatum[] mds = item.getMetadataByMetadataString("local.featuredService." + featuredService);
+				if(mds!=null && mds.length>0) {
+					fsInnerDiv.addPara().addButton("featuredService_" + featuredService, "btn btn-danger").setValue("Deactivate"); 
+				} else {
+					fsInnerDiv.addPara().addButton("featuredService_" + featuredService, "btn btn-primary").setValue("Activate");
+				}
+			}
+		
+		} else {
+			
+		}
 
 		main.addPara().addHidden("administrative-continue").setValue(knot.getId());
 
