@@ -1391,3 +1391,26 @@ div.modal-scrollbar {
 #aspect_submission_StepTransformer_list_controls .licenseselector {
 	margin: 10px 0px 10px 0px;
 }
+
+.treeview,
+.treeview ul,
+.treeview li
+{
+    padding: 0px 0px 0px 8px;
+    margin: 0;
+    list-style: none;
+}
+
+.treeview .foldername:before {
+        font-family: FontAwesome;
+        content: '\f07b';
+        margin-right: 5px;
+        color: #A0A0A0;
+}
+
+.treeview .filename:before {
+        font-family: FontAwesome;
+        content: '\f016';
+        margin-right: 5px;
+        color: #A0A0A0;
+}

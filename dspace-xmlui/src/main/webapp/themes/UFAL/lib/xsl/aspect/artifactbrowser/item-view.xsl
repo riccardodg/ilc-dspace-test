@@ -17,8 +17,9 @@
 	xmlns:confman="org.dspace.core.ConfigurationManager"
     xmlns:str="http://exslt.org/strings"
     xmlns:isocodes="cz.cuni.mff.ufal.IsoLangCodes"
-	exclude-result-prefixes="xalan java encoder solrClientUtils i18n dri mets dim xlink xsl confman util isocodes">
-
+    xmlns:ft="cz.cuni.mff.ufal.FileTreeViewGenerator"
+	exclude-result-prefixes="xalan java encoder solrClientUtils i18n dri mets dim xlink xsl confman util isocodes ft">
+	
 	<xsl:output indent="yes" />
 
 	<xsl:template name="itemSummaryView-DIM">
@@ -900,22 +901,18 @@
 						<xsl:value-of
 							select="mets:FLocat[@LOCTYPE='URL']/@xlink:title" />
 					</dd>
-
-					<dt>
-						List of Files
-					</dt>
-					<dd>
-						<xsl:value-of
-								select="string(mets:Local/mets:file)" />
-					</dd>
-					<dt>
-						Arbitrary info - should be displayed in a loop
-					</dt>
-					<dd>
-						<xsl:value-of
-								select="string(mets:Local/mets:file)" />
-					</dd>
-
+					
+					<xsl:for-each select="mets:Local/*[local-name()!='file']">
+						<dt>
+							<xsl:value-of
+									select="local-name()" />
+						</dt>
+						<dd>
+							<xsl:value-of
+									select="./node()" />
+						</dd>
+					</xsl:for-each>
+					
 					<dt>
 						<i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-size</i18n:text>
 					</dt>
@@ -954,6 +951,38 @@
                         <i18n:param><xsl:copy-of select="$formatted-file-size"/></i18n:param>
                     </i18n:translate>
 				</a>
+				<xsl:if test="mets:Local/mets:file">
+					<a class="label label-info" role="button" data-toggle="collapse">
+						<xsl:attribute name="href">
+							<xsl:text>#file_</xsl:text><xsl:copy-of select="@ID"></xsl:copy-of>
+						</xsl:attribute>					
+                    	<i class="fa fa-file-archive-o">&#160;</i>
+                    	Preview
+					</a>
+					<div class="collapse">
+						<xsl:attribute name="id">
+							<xsl:text>file_</xsl:text><xsl:copy-of select="@ID"></xsl:copy-of>
+						</xsl:attribute>
+  						<div class="panel panel-default" style="margin: 5px 1px 1px 1px;">
+							<div class="bold panel-heading text-center" style="height: auto; padding: 0px;">
+								<i class="fa fa-eye">&#160;</i>
+								File Preview
+								<a role="button" data-toggle="collapse" class="pull-right">
+									<xsl:attribute name="href">
+										<xsl:text>#file_</xsl:text><xsl:copy-of select="@ID"></xsl:copy-of>
+									</xsl:attribute>								
+									<i class="fa fa-remove">&#160;</i>
+								</a>
+							</div>  						
+  							<div class="panel-body">
+								<xsl:variable name="files">
+									<xsl:copy-of select="mets:Local/mets:file"/>
+								</xsl:variable>  						
+	  							<xsl:value-of select="ft:parse($files)" disable-output-escaping="yes" />
+  							</div>
+						</div>
+					</div>					
+				</xsl:if>
 			</div>			
 	</xsl:template>
 
@@ -1133,7 +1162,3 @@
 		</div><!-- /.modal -->
         </xsl:template>
 </xsl:stylesheet>
-
-
-
-
