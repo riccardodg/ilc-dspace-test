@@ -940,7 +940,7 @@
 						</dd>
 					</xsl:if>
 				</dl>
-				<a class="label label-info">
+				<a class="filebutton label label-info">
 					<xsl:attribute name="href">
                         <xsl:value-of
 						select="mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
@@ -952,7 +952,7 @@
                     </i18n:translate>
 				</a>
 				<xsl:if test="mets:Local/mets:file">
-					<a class="label label-info" role="button" data-toggle="collapse">
+					<a class="filebutton label label-info" role="button" data-toggle="collapse">
 						<xsl:attribute name="href">
 							<xsl:text>#file_</xsl:text><xsl:copy-of select="@ID"></xsl:copy-of>
 						</xsl:attribute>					
