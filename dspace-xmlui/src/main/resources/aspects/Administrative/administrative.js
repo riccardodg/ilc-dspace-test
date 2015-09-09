@@ -1586,12 +1586,26 @@ function doEditItemLicense(itemID) {
 *  Add/Remove Item Services
 */
 function doEditItemServices(itemID){
+	var result;
 	do {
-		var activate = cocoon.request.getParameter("activate");
-		var deactivate = cocoon.request.getParameter("deactivate");
-		sendPageAndWait("admin/item/services",{"itemID":itemID,"activate":activate,"deactivate":deactivate},null);
+		sendPageAndWait("admin/item/services",{"itemID":itemID}, result);
 		assertEditItem(itemID);
-		if (!cocoon.request.get("services"))
+		if (cocoon.request.getParamter("activate"))
+		{
+			var serviceName = cocoon.request.getParamter("activate");
+			result = EditItemServicesForm.activate(getDSContext(), itemID, serviceName);
+		}
+		if (cocoon.request.getParamter("deactivate"))
+		{
+			var serviceName = cocoon.request.getParamter("deactivate");
+			result = EditItemServicesForm.deactivate(getDSContext(), itemID, serviceName)
+		}
+		if (cocoon.request.getParamter("udpate"))
+		{
+			var serviceName = cocoon.request.getParamter("udpate");
+			result = EditItemServicesForm.update(getDSContext(), itemID, serviceName)
+		}		
+		else 
 		{
 			// go back to wherever we came from.
 			return null;

@@ -10,28 +10,14 @@ import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Body;
-import org.dspace.app.xmlui.wing.element.Cell;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.List;
 import org.dspace.app.xmlui.wing.element.PageMeta;
-import org.dspace.app.xmlui.wing.element.Para;
-import org.dspace.app.xmlui.wing.element.Radio;
-import org.dspace.app.xmlui.wing.element.Row;
-import org.dspace.app.xmlui.wing.element.Select;
-import org.dspace.app.xmlui.wing.element.Text;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
-import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
-import org.dspace.eperson.EPerson;
-
-import cz.cuni.mff.ufal.DSpaceApi;
-import cz.cuni.mff.ufal.lindat.utilities.hibernate.LicenseDefinition;
-import cz.cuni.mff.ufal.lindat.utilities.hibernate.LicenseLabel;
-import cz.cuni.mff.ufal.lindat.utilities.interfaces.IFunctionalities;
 
 
 /**
@@ -43,17 +29,13 @@ import cz.cuni.mff.ufal.lindat.utilities.interfaces.IFunctionalities;
 
 public class EditItemServicesForm extends AbstractDSpaceTransformer {
 	
-	Logger log = Logger.getLogger(EditItemServicesForm.class);
+	static Logger log = Logger.getLogger(EditItemServicesForm.class);
 
 	/** Language strings */
 	private static final Message T_dspace_home = message("xmlui.general.dspace_home");	
 	private static final Message T_item_trail = message("xmlui.administrative.item.general.item_trail");
 	private static final Message T_option_head = message("xmlui.administrative.item.general.option_head");
-		
-	private static final Message T_save = message("xmlui.general.save");
-	private static final Message T_update = message("xmlui.general.update");
-	private static final Message T_return = message("xmlui.general.return");
-	
+			
 	private static final Message T_title = message("xmlui.administrative.item.EditItemServicesForm.title");
 	private static final Message T_trail = message("xmlui.administrative.item.EditItemServicesForm.trail");
 	
@@ -71,32 +53,9 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		// Get our parameters and state
 		int itemID = parameters.getParameterAsInteger("itemID",-1);
 		
-		String activate = parameters.getParameter("activate", null);
-		String deactivate = parameters.getParameter("deactivate", null);
-		
 		Item item = Item.find(context, itemID);
 		String baseURL = contextPath+"/admin/item?administrative-continue="+knot.getId();
-		
-		
-		if(activate!=null && !activate.isEmpty()) {
-			item.clearMetadata("local", "featuredService", activate, item.ANY);
-			item.addMetadata("local", "featuredService", activate, item.ANY, "true");
-			try {
-				item.update();
-			} catch (AuthorizeException e) {
-				log.error(e);
-			}
-		}
-		
-		if(deactivate!=null && !deactivate.isEmpty()) {
-			item.clearMetadata("local", "featuredService", deactivate, item.ANY);
-			try {
-				item.update();
-			} catch (AuthorizeException e) {
-				log.error(e);
-			}			
-		}
-		
+						
 		
 		// DIVISION: main
 		Division main = body.addInteractiveDivision("edit-item-services", contextPath+"/admin/item", Division.METHOD_POST,"primary administrative edit-item-services");
@@ -122,9 +81,17 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 
 				Division fsInnerDiv = fsDiv.addDivision(featuredService, "well well-white").addDivision("caption", "caption");
 				fsInnerDiv.addPara(null, "h3").addXref(url, name, "target_blank");
-				fsInnerDiv.addPara(description);				
+				fsInnerDiv.addPara(description);
+				List service_urls = fsInnerDiv.addList("service_urls", List.TYPE_GLOSS);
+				service_urls.addLabel("Service Base URL");
+				service_urls.addItem(url);
+				service_urls.addLabel("Add Item integration links");
+				org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem();
+				inputs.addText("key_1");
+				inputs.addText("value_1");
 				Metadatum[] mds = item.getMetadataByMetadataString("local.featuredService." + featuredService);
 				if(mds!=null && mds.length!=0 && mds[0].value.equals("true")) {
+					fsInnerDiv.addPara().addXref(tabLink + "&update=" + featuredService, "Update", "btn btn-info");
 					fsInnerDiv.addPara().addXref(tabLink + "&deactivate=" + featuredService, "Deactivate", "btn btn-danger");
 				} else {
 					fsInnerDiv.addPara().addXref(tabLink + "&activate=" + featuredService, "Activate", "btn btn-info");
@@ -139,4 +106,68 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 
 	}
 	
+	public static FlowResult activate(Context context, int itemID, String serviceName) {
+		FlowResult result = new FlowResult();
+		if(serviceName == null || serviceName.isEmpty()) {
+			result.setOutcome(false);
+			result.setContinue(false);
+			return result;
+		}
+		
+		try {
+			Item item = Item.find(context, itemID);		
+			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
+			item.addMetadata("local", "featuredService", serviceName, Item.ANY, "true");
+			item.update();
+		} catch (Exception e) {
+			log.error(e);
+			result.setOutcome(false);
+			result.setContinue(false);			
+		}
+		
+		return result;
+	}
+
+	public static FlowResult deactivate(Context context, int itemID, String serviceName) {
+		FlowResult result = new FlowResult();
+		if(serviceName == null || serviceName.isEmpty()) {
+			result.setOutcome(false);
+			result.setContinue(false);
+			return result;
+		}
+		
+		try {
+			Item item = Item.find(context, itemID);		
+			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
+			item.update();
+		} catch (Exception e) {
+			log.error(e);
+			result.setOutcome(false);
+			result.setContinue(false);			
+		}
+		
+		return result;
+	}
+
+	public static FlowResult update(Context context, int itemID, String serviceName) {
+		FlowResult result = new FlowResult();
+		if(serviceName == null || serviceName.isEmpty()) {
+			result.setOutcome(false);
+			result.setContinue(false);
+			return result;
+		}
+		
+		try {
+			Item item = Item.find(context, itemID);		
+			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
+			item.update();
+		} catch (Exception e) {
+			log.error(e);
+			result.setOutcome(false);
+			result.setContinue(false);			
+		}
+		
+		return result;
+	}
+
 }
