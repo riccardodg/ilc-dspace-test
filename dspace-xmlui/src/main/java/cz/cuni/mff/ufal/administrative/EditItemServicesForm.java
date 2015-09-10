@@ -83,17 +83,27 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 				fsInnerDiv.addPara(null, "h3").addXref(url, name, "target_blank");
 				fsInnerDiv.addPara(description);
 				List service_urls = fsInnerDiv.addList("service_urls", List.TYPE_GLOSS);
-				service_urls.addLabel("Service Base URL");
-				service_urls.addItem(url);
-				service_urls.addLabel("Add Item integration links");
-				org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem();
-				inputs.addText("key_1");
-				inputs.addText("value_1");
+				service_urls.addLabel("base_url_label", "").addContent("Service Base URL");
+				service_urls.addItem("base_url_value", "").addContent(url);
+				service_urls.addLabel("add_links_label", "").addContent("Add Item integration links");
 				Metadatum[] mds = item.getMetadataByMetadataString("local.featuredService." + featuredService);
-				if(mds!=null && mds.length!=0 && mds[0].value.equals("true")) {
+				if(mds!=null && mds.length!=0) {
+					int c = 0;
+					for(Metadatum md : mds) {
+						c++;
+						String []key_value = md.value.split("\\|");
+						org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem("text_fields_" + c, "");
+						inputs.addText("url_key_" + c).setValue(key_value[0]);
+						inputs.addText("url_value_" + c).setValue(key_value[1]);						
+					}
+					service_urls.addItem("", "hidden").addHidden("url_key_count").setValue(c);
 					fsInnerDiv.addPara().addXref(tabLink + "&update=" + featuredService, "Update", "btn btn-info");
 					fsInnerDiv.addPara().addXref(tabLink + "&deactivate=" + featuredService, "Deactivate", "btn btn-danger");
 				} else {
+					org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem("text_fields_1", "");
+					inputs.addText("url_key_1");
+					inputs.addText("url_value_1");
+					service_urls.addItem("", "hidden").addHidden("url_key_count").setValue(1);
 					fsInnerDiv.addPara().addXref(tabLink + "&activate=" + featuredService, "Activate", "btn btn-info");
 				}
 			}
@@ -106,7 +116,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 
 	}
 	
-	public static FlowResult activate(Context context, int itemID, String serviceName) {
+	public static FlowResult activate(Context context, int itemID, String serviceName, String keyValuePairs) {
 		FlowResult result = new FlowResult();
 		if(serviceName == null || serviceName.isEmpty()) {
 			result.setOutcome(false);
@@ -117,7 +127,11 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		try {
 			Item item = Item.find(context, itemID);		
 			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
-			item.addMetadata("local", "featuredService", serviceName, Item.ANY, "true");
+			
+			for(String keyvalue : keyValuePairs.split("[\\{\\}]+")) {
+				item.addMetadata("local", "featuredService", serviceName, Item.ANY, keyvalue);
+			}
+						
 			item.update();
 		} catch (Exception e) {
 			log.error(e);

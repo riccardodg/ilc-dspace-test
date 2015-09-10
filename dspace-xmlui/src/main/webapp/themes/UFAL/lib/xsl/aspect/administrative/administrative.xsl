@@ -184,4 +184,43 @@
         </input>
     </xsl:template>
     
+    <xsl:template match="dri:div[@n='featuredService']//dri:list[@n='service_urls']" priority="10">    
+		<dl>
+			<dt>
+				<xsl:value-of select="dri:label[@n='base_url_label']/node()"/>						
+			</dt>
+			<dd>
+				<span>
+					<xsl:apply-templates name="id">
+						<xsl:value-of select="translate(dri:item[@n='base_url_value']/@id,'.','_')"/>
+					</xsl:apply-templates>
+					<xsl:value-of select="dri:item[@n='base_url_value']/node()"/>
+				</span>
+			</dd>
+			<dt>
+				<xsl:value-of select="dri:label[@n='add_links_label']/node()"/>
+			</dt>
+			<dd>
+				<table class="table">
+					<thead>
+						<tr><th>Key</th><th>Value</th></tr>
+					</thead>
+					<tbody>
+						<xsl:for-each select="dri:item[starts-with(@n, 'text_fields_')]">
+							<tr>
+								<td class="col-md-3">
+									<xsl:apply-templates select="dri:field[starts-with(@n, 'url_key_')]" />
+								</td>
+								<td class="col-md-9">
+									<xsl:apply-templates select="dri:field[starts-with(@n, 'url_value_')]" />
+								</td>
+							</tr>
+						</xsl:for-each>
+					</tbody>
+				</table>
+				<xsl:apply-templates select=".//dri:field[@n='url_key_count']" />
+			</dd>
+		</dl>		
+    </xsl:template>    
+    
 </xsl:stylesheet>

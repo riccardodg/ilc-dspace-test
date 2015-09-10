@@ -1590,19 +1590,27 @@ function doEditItemServices(itemID){
 	do {
 		sendPageAndWait("admin/item/services",{"itemID":itemID}, result);
 		assertEditItem(itemID);
-		if (cocoon.request.getParamter("activate"))
+		if (cocoon.request.getParameter("activate"))
 		{
-			var serviceName = cocoon.request.getParamter("activate");
-			result = EditItemServicesForm.activate(getDSContext(), itemID, serviceName);
+			var serviceName = cocoon.request.getParameter("activate");
+			var count = cocoon.request.getParameter("url_key_count");
+			String keyValuePairs = "";
+			for(int i=1;i<=count;i++) {
+				String key = cocoon.request.getParameter("url_key_" + i);
+				String value = cocoon.request.getParameter("url_value_" + i);
+				keyValuePairs = keyValuePairs + "{" + key + "|" + value + "}";
+			}
+			
+			result = EditItemServicesForm.activate(getDSContext(), itemID, serviceName, keyValuePairs);
 		}
-		if (cocoon.request.getParamter("deactivate"))
+		if (cocoon.request.getParameter("deactivate"))
 		{
-			var serviceName = cocoon.request.getParamter("deactivate");
+			var serviceName = cocoon.request.getParameter("deactivate");
 			result = EditItemServicesForm.deactivate(getDSContext(), itemID, serviceName)
 		}
-		if (cocoon.request.getParamter("udpate"))
+		if (cocoon.request.getParameter("udpate"))
 		{
-			var serviceName = cocoon.request.getParamter("udpate");
+			var serviceName = cocoon.request.getParameter("udpate");
 			result = EditItemServicesForm.update(getDSContext(), itemID, serviceName)
 		}		
 		else 
