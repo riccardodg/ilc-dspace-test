@@ -191,9 +191,9 @@
 			</dt>
 			<dd>
 				<span>
-					<xsl:apply-templates name="id">
+					<xsl:attribute name="id">
 						<xsl:value-of select="translate(dri:item[@n='base_url_value']/@id,'.','_')"/>
-					</xsl:apply-templates>
+					</xsl:attribute>
 					<xsl:value-of select="dri:item[@n='base_url_value']/node()"/>
 				</span>
 			</dd>
