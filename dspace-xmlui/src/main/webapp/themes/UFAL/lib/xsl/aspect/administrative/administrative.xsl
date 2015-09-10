@@ -209,16 +209,16 @@
 						<xsl:for-each select="dri:item[starts-with(@n, 'text_fields_')]">
 							<tr>
 								<td class="col-md-3">
-									<xsl:apply-templates select="dri:field[starts-with(@n, 'url_key_')]" />
+									<xsl:apply-templates select="dri:field[starts-with(@rend, 'url_key_')]" />
 								</td>
 								<td class="col-md-9">
-									<xsl:apply-templates select="dri:field[starts-with(@n, 'url_value_')]" />
+									<xsl:apply-templates select="dri:field[starts-with(@rend, 'url_value_')]" />
 								</td>
 							</tr>
 						</xsl:for-each>
 					</tbody>
 				</table>
-				<xsl:apply-templates select=".//dri:field[@n='url_key_count']" />
+				<xsl:apply-templates select=".//dri:field[@rend='url_count']" />
 			</dd>
 		</dl>		
     </xsl:template>    

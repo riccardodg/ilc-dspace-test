@@ -1593,17 +1593,8 @@ function doEditItemServices(itemID){
 		assertEditItem(itemID);
 		if (cocoon.request.getParameter("activate"))
 		{
-			var serviceName = cocoon.request.getParameter("activate");
-			var count = cocoon.request.getParameter("url_key_count");
-			var keyValuePairs = "";
-			for(var i=1;i<=count;i++)
-			{
-				var key = cocoon.request.getParameter("url_key_" + i);
-				var value = cocoon.request.getParameter("url_value_" + i);
-				keyValuePairs = keyValuePairs + "{" + key + "|" + value + "}";
-			}
-			
-			result = EditItemServicesForm.activate(getDSContext(), itemID, serviceName, keyValuePairs);
+			var serviceName = cocoon.request.getParameter("activate");			
+			result = EditItemServicesForm.activate(getDSContext(), itemID, serviceName, cocoon.request);
 		}
 		if (cocoon.request.getParameter("deactivate"))
 		{

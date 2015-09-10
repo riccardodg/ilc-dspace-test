@@ -3,6 +3,7 @@ package cz.cuni.mff.ufal.administrative;
 
 import java.sql.SQLException;
 
+import org.apache.cocoon.environment.Request;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.aspect.administrative.FlowResult;
 import org.dspace.app.xmlui.aspect.administrative.item.ViewItem;
@@ -92,17 +93,17 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						c++;
 						String []key_value = md.value.split("\\|");
 						org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem("text_fields_" + c, "");
-						inputs.addText("url_key_" + c).setValue(key_value[0]);
-						inputs.addText("url_value_" + c).setValue(key_value[1]);						
+						inputs.addText(featuredService + "_url_key_" + c, "url_key").setValue(key_value[0]);
+						inputs.addText(featuredService + "_url_value_" + "url_value").setValue(key_value[1]);						
 					}
 					service_urls.addItem("", "hidden").addHidden("url_key_count").setValue(c);
 					fsInnerDiv.addPara().addXref(tabLink + "&update=" + featuredService, "Update", "btn btn-info");
 					fsInnerDiv.addPara().addXref(tabLink + "&deactivate=" + featuredService, "Deactivate", "btn btn-danger");
 				} else {
 					org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem("text_fields_1", "");
-					inputs.addText("url_key_1");
-					inputs.addText("url_value_1");
-					service_urls.addItem("", "hidden").addHidden("url_key_count").setValue(1);
+					inputs.addText("", "url_key");
+					inputs.addText("", "url_value");
+					service_urls.addItem("", "hidden").addHidden(featuredService + "_url_count", "url_count").setValue(1);
 					fsInnerDiv.addPara().addXref(tabLink + "&activate=" + featuredService, "Activate", "btn btn-info");
 				}
 			}
@@ -115,7 +116,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 
 	}
 	
-	public static FlowResult activate(Context context, int itemID, String serviceName, String keyValuePairs) {
+	public static FlowResult activate(Context context, int itemID, String serviceName, Request request) {
 		FlowResult result = new FlowResult();
 		if(serviceName == null || serviceName.isEmpty()) {
 			result.setOutcome(false);
@@ -124,12 +125,13 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		}
 		
 		try {
-			Item item = Item.find(context, itemID);		
-			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
+			Item item = Item.find(context, itemID);
 			
-			for(String keyvalue : keyValuePairs.split("[\\{\\}]+")) {
-				item.addMetadata("local", "featuredService", serviceName, Item.ANY, keyvalue);
-			}
+			String key = request.getParameter(serviceName + "_url_key_1");
+			String value = request.getParameter(serviceName + "_url_value_1");
+			
+			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
+			item.addMetadata("local", "featuredService", serviceName, Item.ANY, key + "|" + value);
 						
 			item.update();
 		} catch (Exception e) {
