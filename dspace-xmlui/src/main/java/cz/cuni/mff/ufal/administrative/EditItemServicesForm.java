@@ -96,13 +96,13 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						inputs.addText(featuredService + "_url_key_" + c, "url_key").setValue(key_value[0]);
 						inputs.addText(featuredService + "_url_value_" + "url_value").setValue(key_value[1]);						
 					}
-					service_urls.addItem("", "hidden").addHidden("url_key_count").setValue(c);
+					service_urls.addItem("", "hidden").addHidden(featuredService + "url_count").setValue(c);
 					fsInnerDiv.addPara().addXref(tabLink + "&update=" + featuredService, "Update", "btn btn-info");
 					fsInnerDiv.addPara().addXref(tabLink + "&deactivate=" + featuredService, "Deactivate", "btn btn-danger");
 				} else {
 					org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem("text_fields_1", "");
-					inputs.addText("", "url_key");
-					inputs.addText("", "url_value");
+					inputs.addText(featuredService + "_url_key_1", "url_key");
+					inputs.addText(featuredService + "_url_value_1", "url_value");
 					service_urls.addItem("", "hidden").addHidden(featuredService + "_url_count", "url_count").setValue(1);
 					fsInnerDiv.addPara().addXref(tabLink + "&activate=" + featuredService, "Activate", "btn btn-info");
 				}
