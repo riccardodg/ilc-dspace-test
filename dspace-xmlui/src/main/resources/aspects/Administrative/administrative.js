@@ -38,6 +38,7 @@ importClass(Packages.cz.cuni.mff.ufal.administrative.LicenseForm);
 importClass(Packages.org.dspace.app.xmlui.aspect.administrative.FlowBatchImportUtils);
 importClass(Packages.java.lang.System);
 importClass(Packages.org.dspace.core.ConfigurationManager);
+importClass(Packages.cz.cuni.mff.ufal.administrative.EditItemServicesForm);
 
 /**
  * Simple access method to access the current cocoon object model.
