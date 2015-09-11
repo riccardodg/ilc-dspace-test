@@ -11,9 +11,11 @@ import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Body;
+import org.dspace.app.xmlui.wing.element.Button;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.List;
 import org.dspace.app.xmlui.wing.element.PageMeta;
+import org.dspace.app.xmlui.wing.element.Para;
 import org.dspace.content.Item;
 import org.dspace.content.Metadatum;
 import org.dspace.core.ConfigurationManager;
@@ -97,14 +99,22 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						inputs.addText(featuredService + "_url_value_" + "url_value").setValue(key_value[1]);						
 					}
 					service_urls.addItem("", "hidden").addHidden(featuredService + "url_count").setValue(c);
-					fsInnerDiv.addPara().addXref(tabLink + "&update=" + featuredService, "Update", "btn btn-info");
-					fsInnerDiv.addPara().addXref(tabLink + "&deactivate=" + featuredService, "Deactivate", "btn btn-danger");
+					Para btns = fsInnerDiv.addPara("buttons", "");
+					Button update = btns.addButton("update", "btn btn-sm btn-info");
+					update.setLabel("Update");
+					update.setValue(featuredService);
+					Button deactivate = btns.addButton("deactivate", "btn btn-sm btn-danger");
+					deactivate.setLabel("Deactivate");
+					deactivate.setValue(featuredService);
 				} else {
 					org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem("text_fields_1", "");
 					inputs.addText(featuredService + "_url_key_1", "url_key");
 					inputs.addText(featuredService + "_url_value_1", "url_value");
 					service_urls.addItem("", "hidden").addHidden(featuredService + "_url_count", "url_count").setValue(1);
-					fsInnerDiv.addPara().addXref(tabLink + "&activate=" + featuredService, "Activate", "btn btn-info");
+					Para btns = fsInnerDiv.addPara("buttons", "");
+					Button activate = btns.addButton("activate", "btn btn-sm btn-danger");
+					activate.setLabel("Activate");
+					activate.setValue(featuredService);					
 				}
 			}
 		
@@ -126,7 +136,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		
 		try {
 			Item item = Item.find(context, itemID);
-			
+			request.getParameters()
 			String key = request.getParameter(serviceName + "_url_key_1");
 			String value = request.getParameter(serviceName + "_url_value_1");
 			

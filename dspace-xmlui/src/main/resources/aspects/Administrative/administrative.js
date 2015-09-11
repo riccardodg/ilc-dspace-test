@@ -1591,19 +1591,19 @@ function doEditItemServices(itemID){
 	do {
 		sendPageAndWait("admin/item/services",{"itemID":itemID}, result);
 		assertEditItem(itemID);
-		if (cocoon.request.getParameter("activate"))
+		if (cocoon.request.get("activate"))
 		{
-			var serviceName = cocoon.request.getParameter("activate");			
+			var serviceName = cocoon.request.get("activate");			
 			result = EditItemServicesForm.activate(getDSContext(), itemID, serviceName, cocoon.request);
 		}
-		if (cocoon.request.getParameter("deactivate"))
+		if (cocoon.request.get("deactivate"))
 		{
-			var serviceName = cocoon.request.getParameter("deactivate");
+			var serviceName = cocoon.request.get("deactivate");
 			result = EditItemServicesForm.deactivate(getDSContext(), itemID, serviceName)
 		}
-		if (cocoon.request.getParameter("udpate"))
+		if (cocoon.request.get("udpate"))
 		{
-			var serviceName = cocoon.request.getParameter("udpate");
+			var serviceName = cocoon.request.get("udpate");
 			result = EditItemServicesForm.update(getDSContext(), itemID, serviceName)
 		}		
 		else 
