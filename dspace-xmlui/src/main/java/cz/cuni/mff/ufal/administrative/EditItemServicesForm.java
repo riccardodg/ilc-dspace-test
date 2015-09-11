@@ -136,7 +136,6 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		
 		try {
 			Item item = Item.find(context, itemID);
-			request.getParameters()
 			String key = request.getParameter(serviceName + "_url_key_1");
 			String value = request.getParameter(serviceName + "_url_value_1");
 			

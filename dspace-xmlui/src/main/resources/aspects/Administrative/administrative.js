@@ -1599,12 +1599,12 @@ function doEditItemServices(itemID){
 		if (cocoon.request.get("deactivate"))
 		{
 			var serviceName = cocoon.request.get("deactivate");
-			result = EditItemServicesForm.deactivate(getDSContext(), itemID, serviceName)
+			result = EditItemServicesForm.deactivate(getDSContext(), itemID, serviceName);
 		}
 		if (cocoon.request.get("udpate"))
 		{
 			var serviceName = cocoon.request.get("udpate");
-			result = EditItemServicesForm.update(getDSContext(), itemID, serviceName)
+			result = EditItemServicesForm.update(getDSContext(), itemID, serviceName);
 		}		
 		else 
 		{
