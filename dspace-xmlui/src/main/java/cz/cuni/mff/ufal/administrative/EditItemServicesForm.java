@@ -96,7 +96,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						String []key_value = md.value.split("\\|");
 						org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem("text_fields_" + c, "");
 						inputs.addText(featuredService + "_url_key_" + c, "url_key").setValue(key_value[0]);
-						inputs.addText(featuredService + "_url_value_" + "url_value").setValue(key_value[1]);						
+						inputs.addText(featuredService + "_url_value_" + c, "url_value").setValue(key_value[1]);						
 					}
 					service_urls.addItem("", "hidden").addHidden(featuredService + "url_count").setValue(c);
 					Para btns = fsInnerDiv.addPara("buttons", "");
