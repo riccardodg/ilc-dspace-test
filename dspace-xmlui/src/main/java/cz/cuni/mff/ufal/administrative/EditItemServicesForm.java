@@ -99,7 +99,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						inputs.addText(featuredService + "_url_value_" + c, "url_value").setValue(key_value[1]);						
 					}
 					service_urls.addItem("", "hidden").addHidden(featuredService + "url_count").setValue(c);
-					Para btns = fsInnerDiv.addPara("buttons", "");
+					org.dspace.app.xmlui.wing.element.Item btns = service_urls.addItem("buttons", "");
 					Button update = btns.addButton("update", "btn btn-sm btn-info");
 					update.setLabel("Update");
 					update.setValue(featuredService);
@@ -111,7 +111,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 					inputs.addText(featuredService + "_url_key_1", "url_key");
 					inputs.addText(featuredService + "_url_value_1", "url_value");
 					service_urls.addItem("", "hidden").addHidden(featuredService + "_url_count", "url_count").setValue(1);
-					Para btns = fsInnerDiv.addPara("buttons", "");
+					org.dspace.app.xmlui.wing.element.Item btns = service_urls.addItem("buttons", "");
 					Button activate = btns.addButton("activate", "btn btn-sm btn-danger");
 					activate.setLabel("Activate");
 					activate.setValue(featuredService);					
