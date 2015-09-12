@@ -216,11 +216,26 @@
 								</td>
 							</tr>
 						</xsl:for-each>
+						<tr>
+							<td colspan="2" class="text-right">
+						    	<xsl:for-each select="dri:item[@n='buttons']/dri:field">
+						    		<button>
+						   				<xsl:call-template name="standardAttributes" />
+										<xsl:attribute name="name">
+											<xsl:value-of select="@n"/>
+										</xsl:attribute>					
+										<xsl:attribute name="value">
+											<xsl:value-of select="dri:value/node()"/>
+										</xsl:attribute>
+										<xsl:value-of select="dri:label/node()" />
+						    		</button>
+						    	</xsl:for-each>							
+							</td>
+						</tr>						
 					</tbody>
 				</table>
-				<xsl:apply-templates select=".//dri:field[@rend='url_count']" />
 			</dd>
 		</dl>		
-    </xsl:template>    
+    </xsl:template>
     
 </xsl:stylesheet>

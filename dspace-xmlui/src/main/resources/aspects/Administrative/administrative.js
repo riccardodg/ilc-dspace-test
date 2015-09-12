@@ -1604,7 +1604,7 @@ function doEditItemServices(itemID){
 		if (cocoon.request.get("udpate"))
 		{
 			var serviceName = cocoon.request.get("udpate");
-			result = EditItemServicesForm.update(getDSContext(), itemID, serviceName);
+			result = EditItemServicesForm.update(getDSContext(), itemID, serviceName, cocoon.request);
 		}		
 		else 
 		{

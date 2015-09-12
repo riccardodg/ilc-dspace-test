@@ -112,7 +112,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 					inputs.addText(featuredService + "_url_value_1", "url_value");
 					service_urls.addItem("", "hidden").addHidden(featuredService + "_url_count", "url_count").setValue(1);
 					org.dspace.app.xmlui.wing.element.Item btns = service_urls.addItem("buttons", "");
-					Button activate = btns.addButton("activate", "btn btn-sm btn-danger");
+					Button activate = btns.addButton("activate", "btn btn-sm btn-info");
 					activate.setLabel("Activate");
 					activate.setValue(featuredService);					
 				}
@@ -173,25 +173,8 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		return result;
 	}
 
-	public static FlowResult update(Context context, int itemID, String serviceName) {
-		FlowResult result = new FlowResult();
-		if(serviceName == null || serviceName.isEmpty()) {
-			result.setOutcome(false);
-			result.setContinue(false);
-			return result;
-		}
-		
-		try {
-			Item item = Item.find(context, itemID);		
-			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
-			item.update();
-		} catch (Exception e) {
-			log.error(e);
-			result.setOutcome(false);
-			result.setContinue(false);			
-		}
-		
-		return result;
+	public static FlowResult update(Context context, int itemID, String serviceName, Request request) {
+		return activate(context, itemID, serviceName, request);
 	}
 
 }
