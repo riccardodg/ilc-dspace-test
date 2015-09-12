@@ -131,6 +131,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		if(serviceName == null || serviceName.isEmpty()) {
 			result.setOutcome(false);
 			result.setContinue(false);
+			result.addError("Invalid Service.");
 			return result;
 		}
 		
@@ -143,10 +144,18 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 			item.addMetadata("local", "featuredService", serviceName, Item.ANY, key + "|" + value);
 						
 			item.update();
+			result.setContinue(true);
+			result.setOutcome(true);
+			if(request.get("update")!=null) {
+				result.setMessage(new Message("default", "Service Updated Successfully"));
+			} else {
+				result.setMessage(new Message("default", "Service Activated Successfully"));
+			}
 		} catch (Exception e) {
 			log.error(e);
 			result.setOutcome(false);
-			result.setContinue(false);			
+			result.setContinue(false);
+			result.addError(e.getMessage());
 		}
 		
 		return result;
@@ -164,6 +173,9 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 			Item item = Item.find(context, itemID);		
 			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
 			item.update();
+			result.setContinue(true);
+			result.setOutcome(true);
+			result.setMessage(new Message("default", "Service Deactivated Successfully"));			
 		} catch (Exception e) {
 			log.error(e);
 			result.setOutcome(false);
