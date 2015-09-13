@@ -59,7 +59,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						
 		
 		// DIVISION: main
-		Division main = body.addInteractiveDivision("edit-item-services", baseURL + "&services", Division.METHOD_POST,"primary administrative edit-item-services");
+		Division main = body.addInteractiveDivision("edit-item-services", contextPath+"/admin/item", Division.METHOD_POST,"primary administrative edit-item-services");
 		main.setHead(T_option_head);
 
 		String tabLink = baseURL + "&services";
@@ -97,7 +97,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						inputs.addText(featuredService + "_url_key_" + c, "url_key").setValue(key_value[0]);
 						inputs.addText(featuredService + "_url_value_" + c, "url_value").setValue(key_value[1]);						
 					}
-					service_urls.addItem("url_count", "hidden").addHidden(featuredService + "url_count").setValue(c);
+					service_urls.addItem("url_count", "hidden").addHidden(featuredService + "_url_count").setValue(c);
 					org.dspace.app.xmlui.wing.element.Item btns = service_urls.addItem("buttons", "");
 					Button update = btns.addButton("update", "btn btn-sm btn-info");
 					update.setLabel("Update");

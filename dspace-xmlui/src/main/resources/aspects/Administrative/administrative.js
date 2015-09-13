@@ -1596,11 +1596,13 @@ function doEditItemServices(itemID){
 			var serviceName = cocoon.request.get("activate");			
 			result = EditItemServicesForm.activate(getDSContext(), itemID, serviceName, cocoon.request);
 		}
+		else
 		if (cocoon.request.get("deactivate"))
 		{
 			var serviceName = cocoon.request.get("deactivate");
 			result = EditItemServicesForm.deactivate(getDSContext(), itemID, serviceName);
 		}
+		else
 		if (cocoon.request.get("update"))
 		{
 			var serviceName = cocoon.request.get("update");
