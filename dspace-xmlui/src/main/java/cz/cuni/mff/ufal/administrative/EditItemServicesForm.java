@@ -144,6 +144,8 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 			
 				String key = request.getParameter(serviceName + "_url_key_" + i);
 				String value = request.getParameter(serviceName + "_url_value_" + i);
+				
+				if(key==null || key.isEmpty() || value==null || value.isEmpty()) continue;
 							
 				item.addMetadata("local", "featuredService", serviceName, Item.ANY, key + "|" + value);
 				

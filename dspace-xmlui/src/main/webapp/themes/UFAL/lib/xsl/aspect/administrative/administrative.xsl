@@ -204,7 +204,7 @@
 				<table class="table">
 					<thead>
 						<xsl:apply-templates select="dri:item[@n='url_count']/dri:field" />
-						<tr><th>Key</th><th>Value <a href="#"><i class="fa fa-plus-circle">&#160;</i></a></th></tr>
+						<tr><th>Key</th><th>Value <a href="#" class="pull-right"><i class="fa fa-plus-circle">&#160;</i></a></th></tr>
 					</thead>
 					<tbody>
 						<xsl:for-each select="dri:item[starts-with(@n, 'text_fields_')]">
