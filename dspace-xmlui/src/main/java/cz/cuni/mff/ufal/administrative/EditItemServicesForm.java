@@ -60,7 +60,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						
 		
 		// DIVISION: main
-		Division main = body.addInteractiveDivision("edit-item-services", contextPath+"/admin/item", Division.METHOD_POST,"primary administrative edit-item-services");
+		Division main = body.addInteractiveDivision("edit-item-services", baseURL + "&services", Division.METHOD_POST,"primary administrative edit-item-services");
 		main.setHead(T_option_head);
 
 		String tabLink = baseURL + "&services";
