@@ -203,7 +203,8 @@
 			<dd>
 				<table class="table">
 					<thead>
-						<tr><th>Key</th><th>Value</th></tr>
+						<xsl:apply-templates select="dri:item[@n='url_count']/dri:field" />
+						<tr><th>Key</th><th>Value <a href="#"><i class="fa fa-plus-circle">&#160;</i></a></th></tr>
 					</thead>
 					<tbody>
 						<xsl:for-each select="dri:item[starts-with(@n, 'text_fields_')]">

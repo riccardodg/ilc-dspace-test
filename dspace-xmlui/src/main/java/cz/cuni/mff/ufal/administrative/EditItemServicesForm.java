@@ -97,7 +97,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 						inputs.addText(featuredService + "_url_key_" + c, "url_key").setValue(key_value[0]);
 						inputs.addText(featuredService + "_url_value_" + c, "url_value").setValue(key_value[1]);						
 					}
-					service_urls.addItem("", "hidden").addHidden(featuredService + "url_count").setValue(c);
+					service_urls.addItem("url_count", "hidden").addHidden(featuredService + "url_count").setValue(c);
 					org.dspace.app.xmlui.wing.element.Item btns = service_urls.addItem("buttons", "");
 					Button update = btns.addButton("update", "btn btn-sm btn-info");
 					update.setLabel("Update");
@@ -109,7 +109,7 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 					org.dspace.app.xmlui.wing.element.Item inputs = service_urls.addItem("text_fields_1", "");
 					inputs.addText(featuredService + "_url_key_1", "url_key");
 					inputs.addText(featuredService + "_url_value_1", "url_value");
-					service_urls.addItem("", "hidden").addHidden(featuredService + "_url_count", "url_count").setValue(1);
+					service_urls.addItem("url_count", "hidden").addHidden(featuredService + "_url_count", "url_count").setValue(1);
 					org.dspace.app.xmlui.wing.element.Item btns = service_urls.addItem("buttons", "");
 					Button activate = btns.addButton("activate", "btn btn-sm btn-info");
 					activate.setLabel("Activate");
@@ -136,13 +136,21 @@ public class EditItemServicesForm extends AbstractDSpaceTransformer {
 		
 		try {
 			Item item = Item.find(context, itemID);
-			String key = request.getParameter(serviceName + "_url_key_1");
-			String value = request.getParameter(serviceName + "_url_value_1");
+			int count = Integer.parseInt(request.getParameter(serviceName + "_url_count"));
 			
 			item.clearMetadata("local", "featuredService", serviceName, Item.ANY);
-			item.addMetadata("local", "featuredService", serviceName, Item.ANY, key + "|" + value);
+									
+			for(int i=1;i<=count;i++) {
+			
+				String key = request.getParameter(serviceName + "_url_key_" + i);
+				String value = request.getParameter(serviceName + "_url_value_" + i);
+							
+				item.addMetadata("local", "featuredService", serviceName, Item.ANY, key + "|" + value);
+				
+			}
 						
 			item.update();
+			
 			result.setContinue(true);
 			result.setOutcome(true);
 			if(request.get("update")!=null) {
