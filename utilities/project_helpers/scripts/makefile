@@ -71,6 +71,10 @@ UTILITIES_DATABASE_NAME :=$(shell cd $(BASE) && python setup.lindat.py --get="lr
 DB_PORT			:=$(shell cd $(BASE) && python setup.lindat.py --get="lr.database.port" --from="$(LOCAL_CONF)")
 DIR_INSTALLATION        :=$(shell cd $(BASE) && python setup.lindat.py --get="dspace.install.dir" --from="$(LOCAL_CONF)")
 DIR_LINDAT_COMMON_THEME :=$(shell cd $(BASE) && python setup.lindat.py --get="lr.common.theme" --from="$(LOCAL_CONF)")
+DATABASE_NAME           :=$(shell cd $(BASE) && python setup.lindat.py --get="lr.database" --from="$(LOCAL_CONF)")
+DSPACE_USER             :=$(shell cd $(BASE) && python setup.lindat.py --get="db.username" --from="$(LOCAL_CONF)")
+
+
 
 DIR_LINDAT_THEME_IN_WEBAPPS :=$(DIR_INSTALLATION)/webapps/xmlui/themes/UFAL/lib/lindat
 DIR_DATABASE_BACKUP         :=$(DIR_INSTALLATION)/../database_backup
@@ -135,12 +139,23 @@ add_cronjobs:
 
 print_message:
 	@echo -e "$(GREEN)-- IMPORTANT INFORMATION  ---------------------------------------------$(NORMAL)"; 
+	@echo -e "$(CYAN)BASE DIRECTORY = $(BASE)"; 
 	@echo -e "$(CYAN)SOURCE DIRECTORY = $(DIR_SOURCE)"; 
+	@echo "PROJECT DIRECTORY = ${PROJECT_DIR}"; 
+	@echo "CONF DIRECTORY = ${DIR_CONF}"; 
+	@echo "SUBST DIRECTORY = ${DIR_SUBST}"; 
+	@echo "BUILD DIRECTORY = ${DIR_BUILD}"; 
+	@echo "SUBST DIRECTORY = ${DIR_SUBST}"; 
 	@echo "INSTALLATION DIRECTORY = ${DIR_INSTALLATION}"; 
+	@echo "UTILITIES DIRECTORY = ${DIR_UTILITIES}"; 
+	@echo "DEPLOY LOG DIRECTORY = ${DIR_DEPLOY_LOG}"; 
 	@echo "LOCAL CONFIG FILE = ${LOCAL_CONF}"; 
 	@echo "DATABASE_NAME  = ${DATABASE_NAME}";
 	@echo -e "$(GREEN)=======================================================================$(NORMAL)";
 
+print_deploy: 	print_compile \
+		print_install_dspace \
+		print_postinstall
 
 #======================================================
 # build related - most used
@@ -183,6 +198,17 @@ compile: deploy_logs
 	@if grep -q "BUILD FAILURE" $(DIR_DEPLOY_LOGS)/compile.log; then \
 	        echo -e "$(RED)compile.log contains BUILD FAILURE, exiting$(NORMAL)" && exit -1; fi
 
+print_compile:
+	@echo ""
+	@echo "PRINT COMPILE TASK..."
+	@echo "COMPILING SOURCE....."
+	@echo "EXECUTING: -COMPILING TIME-"
+	@echo 'if grep -q "lr\.compile\.time" $(LOCAL_CONF);then sed --follow-symlinks -i'' "s/^lr\.compile\.time=.*/lr.compile.time=`date`/" $(LOCAL_CONF); else echo -e "$(RED)Compile time not updated$(NORMAL)";fi'
+	@echo "EXECUTING MVN CLEAN PACKAGE..."
+	@echo "cd $(DIR_SOURCE)"
+	@echo "mvn clean package $(MVN_OPTS) 2>&1 | $(HIDE_PASSW) | tee $(DIR_DEPLOY_LOGS)/$@.log"
+
+
 tests:
 	@echo "UNIT TESTING ..."
 	@cd $(DIR_SOURCE) && mvn $(MVN_OPTS_TEST) -Dlog4j.configuration=file:$(DIR_INSTALLATION)/config/log4j-console.properties test
@@ -196,16 +222,32 @@ install_guru:   print_message \
                 install_dspace
 
 install_dspace: 
-	@echo "DEPLOYING LINDAT/CLARIN DSpace ..."
+	@echo "DEPLOYING ILC_LINDAT/CLARIN DSpace ..."
 	@cd $(DIR_BUILD) &&  $(ANT_WITH_CONF) update 2>&1 | $(HIDE_PASSW) | tee $(DIR_DEPLOY_LOGS)/$@.log 
 	@$(MAKE) clean_installation
 	@echo "INSTALLATION SUCCESSFUL ..."
+
+print_install_dspace:
+	@echo ""
+	@echo "PRINT INSTALL DSPACE..."
+	@echo "$(DIR_BUILD)"
+	@echo "$(ANT_WITH_CONF) update 2>&1 | $(HIDE_PASSW) | tee $(DIR_DEPLOY_LOGS)/$@.log"
+
 
 postinstall: update_lindat_common
 	rm -rf $(DIR_LINDAT_THEME_IN_WEBAPPS)
 	ln -s $(DIR_LINDAT_COMMON_THEME) $(DIR_LINDAT_THEME_IN_WEBAPPS)
 	@$(MAKE) grant_rights
 	@echo "DEPLOYMENT (INSTALL + POSTINSTALL) SUCCESSFUL"
+
+print_postinstall:	print_update_lindat_common
+	@echo ""
+	@echo "REMOVING THEME..."
+	@echo "rm -rf $(DIR_LINDAT_THEME_IN_WEBAPPS)"
+	@echo "MAKING SYMLINK..."
+	@echo "ln -s $(DIR_LINDAT_COMMON_THEME) $(DIR_LINDAT_THEME_IN_WEBAPPS)"
+	@echo "GRANTING..."
+	@echo "$(MAKE) grant_rights"
 
 fresh_install: update_lindat_common
 	@echo "INSTALLING FRESH LINDAT/CLARIN DSpace ..."
@@ -298,10 +340,22 @@ check_lindat_common:
 	@echo "Checking lindat common theme into $(DIR_LINDAT_COMMON_THEME)... "
 	@test -d $(DIR_LINDAT_COMMON_THEME)/.git || git clone $(URL_LINDAT_COMMON_GIT) --branch releases $(DIR_LINDAT_COMMON_THEME)
 
+print_check_lindat_common:
+	@echo ""
+	@echo "CHECKING LINDAT COMMON THEME..."
+	@echo "test -d $(DIR_LINDAT_COMMON_THEME)/.git"
+	@echo "CLONING LAST RELEASE TO BE UP-TO-DATE..."
+	@echo "git clone $(URL_LINDAT_COMMON_GIT) --branch releases $(DIR_LINDAT_COMMON_THEME)"
+
 update_lindat_common: check_lindat_common
 	cd $(DIR_LINDAT_COMMON_THEME) && $(LINDAT_COMMON_THEME_FETCH)
 
-
+print_update_lindat_common:	print_check_lindat_common
+	@echo ""
+	@echo "UPDATING LINDAT COMMON THEME..."
+	@echo "cd $(DIR_LINDAT_COMMON_THEME)"
+	@echo "FETCHING LINDAT COMMON THEME..."
+	@echo "$(LINDAT_COMMON_THEME_FETCH)"
 #======================================================
 # webserver&co. related
 #
