@@ -135,6 +135,8 @@
 
 			<!-- Add Lindat stylesheet -->
 			<link rel="stylesheet" href="{$theme-path}/lib/lindat/public/css/lindat.css" />
+		        <!-- add ilc-clarin.css page-structure under UFALHome -->	
+			<link rel="stylesheet" href="{$theme-path}/lib/lindat/public/css/ilc-clarin.css" />
 			
 			<!-- Bootstrap stylesheets -->
 			<link rel="stylesheet" href="{$theme-path}/lib/bootstrap/css/bootstrap.min.css" />
@@ -842,6 +844,14 @@
 	
 	<xsl:template name="top-banner">
 	<div class="row hidden-xs">
+		<div class="col-md-5 col-lg-4 hidden-xs hidden-sm">
+                        <div class="row">
+                                <div style="height: 160px; position: relative;" class="col-md-7 col-lg-7">
+                                  <a href="http://www.clarin.ilc.cnr.it">
+                                    <img src="{$context-path}/themes/UFAL/images/lindat/ilc-clarin-it-logo.png" style="position: absolute; height: 60%; top: 0px; bottom: 0px; margin: auto;" class="logo" alt="CLARIN IT logo" /></a>
+                                </div>
+                        </div>
+                </div>
 		<div style="height: 160px;" class="carousel col-xs-12 col-sm-12 col-md-7 col-lg-8" id="layerslider">
 			<ol class="carousel-indicators">
 				<li class="active" data-slide-to="0" data-target="#layerslider" />
@@ -886,14 +896,14 @@
 			<div class="row">
 				<div style="height: 160px; position: relative;" class="col-md-7 col-lg-7">
 				  <a href="http://www.clarin.ilc.cnr.it">
-			            <img src="{$context-path}/themes/UFAL/images/lindat/ilc-clarin-logo.png" style="position: absolute; height: 60%; top: 0px; bottom: 0px; margin: auto;" class="logo" alt="LINDAT/CLARIN logo" /></a>
+			            <img src="{$context-path}/themes/UFAL/images/lindat/ilc-clarin-logo.png" style="position: absolute; height: 60%; top: 0px; bottom: 0px; margin: auto;" class="logo" alt="ILC/CLARIN logo" /></a>
 				</div>
 		                <div style="height: 160px; position: relative;" class="col-md-5 col-lg-5">
 				    <a href="http://www.clarin.eu/">
-		                    <img src="{$context-path}/themes/UFAL/images/lindat/clarin-logo.png" style="position: absolute; height: 70%; top: 0px; bottom: 0px; margin: auto;" class="logo" alt="LINDAT/CLARIN logo" /></a>
+		                    <img src="{$context-path}/themes/UFAL/images/lindat/clarin-logo.png" style="position: absolute; height: 70%; top: 0px; bottom: 0px; margin: auto;" class="logo" alt="CLARIN logo" /></a>
 		                </div>
 			</div>
-        </div>		
+        	</div>		
 	</div>	
 	</xsl:template>
 </xsl:stylesheet>

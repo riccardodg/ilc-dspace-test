@@ -44,13 +44,14 @@
 				<xsl:if test="not(//dri:div[@n='site-home'])">
 					<li class="always-open hidden-xs">
 						<div style="background-color: #FFFFFF;" class="clearfix">
+<!-- side navigation under UFAL -->
 							<div class="col-sm-7" style="height: 120px; position: relative;">
-								<a href="/lindat">
+								<a href="http://www.clarin.ilc.cnr.it">
 									<img alt="LOGO CLARIN ILC" class="img-responsive" style="position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; padding: 20px;" src="{$context-path}/themes/UFAL/images/lindat/ilc-clarin-logo.png" />
 								</a>
 							</div>
 							<div class="col-sm-7" style="height: 120px; position: relative;">
-                                                                <a href="/lindat">
+                                                                <a href="http://www.clarin-it.it">
                                                                         <img alt="LOGO CLARIN-IT " class="img-responsive" style="position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; padding: 20px;" src="{$context-path}/themes/UFAL/images/lindat/ilc-clarin-it-logo.png" />
                                                                 </a>
                                                         </div>

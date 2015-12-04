@@ -153,7 +153,8 @@ print_message:
 	@echo "DATABASE_NAME  = ${DATABASE_NAME}";
 	@echo -e "$(GREEN)=======================================================================$(NORMAL)";
 
-print_deploy: 	print_compile \
+print_deploy: 	print_message \
+		print_compile \
 		print_install_dspace \
 		print_postinstall
 
