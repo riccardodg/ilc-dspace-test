@@ -18,6 +18,11 @@
 	modified for LINDAT/CLARIN
 
 -->
+<!--
+   Modified for managing different logos
+   Modifier: riccardo.delgratta@[ilc.cnr.it|gmail.com]
+   Date: 2015-12-03
+-->
 
 <xsl:stylesheet xmlns:i18n="http://apache.org/cocoon/i18n/2.1"
                 xmlns:dri="http://di.tamu.edu/DRI/1.0/"
@@ -41,12 +46,18 @@
 						<div style="background-color: #FFFFFF;" class="clearfix">
 							<div class="col-sm-7" style="height: 120px; position: relative;">
 								<a href="/lindat">
-									<img alt="LINDAT/CLARIN logo" class="img-responsive" style="position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; padding: 20px;" src="{$context-path}/themes/UFAL/images/lindat/lindat-logo.png" />
+									<img alt="LOGO CLARIN ILC" class="img-responsive" style="position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; padding: 20px;" src="{$context-path}/themes/UFAL/images/lindat/ilc-clarin-logo.png" />
 								</a>
 							</div>
+							<div class="col-sm-7" style="height: 120px; position: relative;">
+                                                                <a href="/lindat">
+                                                                        <img alt="LOGO CLARIN-IT " class="img-responsive" style="position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; padding: 20px;" src="{$context-path}/themes/UFAL/images/lindat/ilc-clarin-it-logo.png" />
+                                                                </a>
+                                                        </div>
+
 							<div class="col-sm-5 text-center" style="height: 120px; position: relative;">
 								<a href="http://www.clarin.eu/">
-									<img alt="CLARIN logo" class="img-responsive" style="position: absolute; bottom: 0px; left: 0px; right: 0px; padding: 10px;" src="{$context-path}/themes/UFAL/images/lindat/clarin-logo.png" />
+									<img alt="LOGO CLARIN" class="img-responsive" style="position: absolute; bottom: 0px; left: 0px; right: 0px; padding: 10px;" src="{$context-path}/themes/UFAL/images/lindat/clarin-logo.png" />
 								</a>
 							</div>
 						</div>					

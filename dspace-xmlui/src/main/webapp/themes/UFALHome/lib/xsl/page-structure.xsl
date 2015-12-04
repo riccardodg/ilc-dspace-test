@@ -885,8 +885,8 @@
 		<div class="col-md-5 col-lg-4 hidden-xs hidden-sm">
 			<div class="row">
 				<div style="height: 160px; position: relative;" class="col-md-7 col-lg-7">
-				  <a href="/lindat">
-			            <img src="{$context-path}/themes/UFAL/images/lindat/lindat-logo.png" style="position: absolute; height: 60%; top: 0px; bottom: 0px; margin: auto;" class="logo" alt="LINDAT/CLARIN logo" /></a>
+				  <a href="http://www.clarin.ilc.cnr.it">
+			            <img src="{$context-path}/themes/UFAL/images/lindat/ilc-clarin-logo.png" style="position: absolute; height: 60%; top: 0px; bottom: 0px; margin: auto;" class="logo" alt="LINDAT/CLARIN logo" /></a>
 				</div>
 		                <div style="height: 160px; position: relative;" class="col-md-5 col-lg-5">
 				    <a href="http://www.clarin.eu/">
